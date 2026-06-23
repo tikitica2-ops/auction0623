@@ -1,0 +1,58 @@
+이 프로젝트는 벡터 데이터베이스인 ChromaDB를 사용하며, 총 4개의 컬렉션으로 구성되어 있습니다. 각 컬렉션에 적재되는 문서의 구조(Page Content)와 메타데이터(Metadata) 스키마 정보는 다음과 같습니다.
+
+1. auction_laws (법령 컬렉션)
+설명: 부동산 경매 관련 주요 법률 정보 (민사집행법, 주택임대차보호법 등)
+Metadata 스키마:
+source (string): 소스 파일명 (예: 민사집행법.md)
+clause (string): 법률 조항 번호 (예: 제91조)
+type (string): "law" (고정값)
+Page Content 구조 (본문):
+각 법률의 조(條) 단위로 분할된 텍스트 내용
+markdown
+## 제91조 (인수주의와 소멸주의의 원칙)
+① 법원경매를 통한 매각으로 등기부상의 권리는 원칙적으로 소멸한다. ...
+2. auction_procedures (경매 절차 컬렉션)
+설명: 법원 경매의 전체적인 진행 과정 및 각 단계별 절차 안내 가이드
+Metadata 스키마:
+source (string): 소스 파일명 (예: 경매절차.md)
+step (string): 해당 절차 단계의 제목 (예: 매각 준비 및 공고)
+step_index (integer): 절차 순서 인덱스 (1부터 시작)
+type (string): "procedure" (고정값)
+Page Content 구조 (본문):
+경매 진행 단계별 요약 및 상세 절차에 대한 가이드 설명문
+3. auction_glossary (경매 용어 사전 컬렉션)
+설명: 경매 전문 용어 및 정의
+Metadata 스키마:
+source (string): 소스 파일명 (예: glossary.json)
+term (string): 용어 단어명 (예: 대항력)
+type (string): "glossary" (고정값)
+Page Content 구조 (본문):
+text
+용어: {term}
+정의: {definition}
+4. auction_cases (가상 사례 컬렉션)
+설명: 실전 퀴즈 풀이 및 튜터링을 위한 등기부 현황, 임차인 현황 및 권리분석 정답 데이터를 가진 가상 물건 정보
+Metadata 스키마:
+source (string): 소스 파일명 (예: sample_cases.json)
+case_id (string): 사례 고유 ID (예: case_1, case_2)
+difficulty (string): 사례 난이도 (초급, 중급, 고급)
+type (string): "case" (고정값)
+Page Content 구조 (본문):
+text
+[가상 물건 사례 - {difficulty}]
+제목: {title}
+개요: {description}
+감정평가액: {appraised_value}
+최저매각가격: {minimum_bid_price}
+[등기부등본 현황]
+- 번호 1: 2024-01-10 | 근저당권 | 권리자 한국은행 | 금액 120,000,000 (소멸)
+...
+[임차인 현황]
+- 임차인 홍길동: 보증금 80,000,000 | 전입일 2023-05-12 | 확정일자 2023-05-12 | 점유범위 전부 | 대항력 있음
+...
+특이사항: {notes}
+[권리분석 정답]
+- 말소기준권리: {malso_standard}
+- 대항력 여부: {opposing_power}
+- 인수 권리: {takeover_rights}
+- 최종 위험 평가: {risk_assessment}
