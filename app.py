@@ -513,11 +513,11 @@ if "show_analysis_dialog" not in st.session_state:
 def show_analysis_popup(case_no, content):
     st.markdown(f"### 🏢 사건번호 {case_no} 권리분석 & 적정가 예측 리포트")
     st.markdown(f"""
-    <div style="max-height: 500px; overflow-y: auto; padding: 15px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background-color: #f9fafb; color: #111827; font-family: 'Noto Sans KR', sans-serif; line-height: 1.6; white-space: pre-wrap;">{content}</div>
+    <div style="max-height: 600px; overflow-y: auto; padding: 15px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background-color: #f9fafb; color: #111827; font-family: 'Noto Sans KR', sans-serif; line-height: 1.6; white-space: pre-wrap;">{content}</div>
     """, unsafe_allow_html=True)
-    if st.button("확인 및 닫기", use_container_width=True):
-        st.session_state.show_analysis_dialog = False
-        st.rerun()
+    # if st.button("확인 및 닫기", use_container_width=True):
+    #     st.session_state.show_analysis_dialog = False
+    #     st.rerun()
 
 def reset_chat():
     st.session_state.messages = []
@@ -971,10 +971,11 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
         analyzing_case = st.session_state.get("analyzing_case_id")
         if analyzing_case:
             # Case Analysis Status Monitor (overlapping/replacing the news section)
+            status_text = "🤖 AI가 분석이 완료되었습니다" if st.session_state.get("analysis_completed") else "🤖 AI가 분석중이예요"
             st.markdown(f"""
             <div class="ai-panel" style="margin-bottom: 10px;">
                 <div class="ai-panel-header">
-                    🤖 AI가 분석중이예요
+                    {status_text}
                 </div>
                 <div style="font-size: 0.85rem; font-weight: bold; color: #4B5563; margin-top: -5px; margin-bottom: 10px;">
                     사건번호: {analyzing_case}
@@ -1139,12 +1140,12 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
                 statuses = {f: "🟢 분석 완료" for f in sorted_files}
                 statuses["predict"] = "예측 완료"
                 render_statuses(statuses)
-                if st.button("🔄 재분석 시작", use_container_width=True):
+                if st.button("🔄 재분석 시작 (AI 권리분석 & 적정가 예측)", use_container_width=True):
                     st.session_state.analysis_completed = False
                     st.session_state.analysis_results_text = None
                     st.session_state.show_analysis_dialog = False
                     st.rerun()
-                if st.button("📊 결과 보고서 다시보기", use_container_width=True):
+                if st.button("📊 분석결과 다시보기", use_container_width=True):
                     st.session_state.show_analysis_dialog = True
                     st.rerun()
                 if st.button("❌ 분석 종료", use_container_width=True):
@@ -1153,26 +1154,25 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
                     st.session_state.analysis_results_text = None
                     st.session_state.show_analysis_dialog = False
                     st.rerun()
+        # Latest News List (rendered flat, no tabs, no bookmark shortcuts)
+        st.markdown("""
+        <div style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 700; font-size: 1.1rem; color: #1F2937;">
+            📰 최신 뉴스
+        </div>
+        """, unsafe_allow_html=True)
+        news_feed = dash_data.get("news", [])
+        if news_feed:
+            for item in news_feed:
+                st.markdown(f"""
+                <div class="news-card">
+                    <span style="color:#A855F7; font-size:0.75rem; font-weight:600;">[{item['press']}]</span><br/>
+                    <a href="{item['link']}" target="_blank" style="text-decoration:none; color:#111827; font-weight:600; font-size:0.82rem;">
+                        {item['title']}
+                    </a>
+                </div>
+                """, unsafe_allow_html=True)
         else:
-            # Latest News List (rendered flat, no tabs, no bookmark shortcuts)
-            st.markdown("""
-            <div style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 700; font-size: 1.1rem; color: #1F2937;">
-                📰 최신 뉴스
-            </div>
-            """, unsafe_allow_html=True)
-            news_feed = dash_data.get("news", [])
-            if news_feed:
-                for item in news_feed:
-                    st.markdown(f"""
-                    <div class="news-card">
-                        <span style="color:#A855F7; font-size:0.75rem; font-weight:600;">[{item['press']}]</span><br/>
-                        <a href="{item['link']}" target="_blank" style="text-decoration:none; color:#111827; font-weight:600; font-size:0.82rem;">
-                            {item['title']}
-                        </a>
-                    </div>
-                    """, unsafe_allow_html=True)
-            else:
-                st.info("뉴스를 불러오는 데 실패했습니다.")
+            st.info("뉴스를 불러오는 데 실패했습니다.")
 
 elif st.session_state.current_tab == "📝 실전 권리분석 퀴즈":
     st.markdown("### 📝 실전 사례 권리분석 퀴즈 모드")
