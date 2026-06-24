@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import config
 
-def get_llm(temperature=0.0):
+def get_llm(temperature=0.0, model_name=None):
     """
     Returns an LLM instance based on configuration.
     """
@@ -30,7 +30,7 @@ def get_llm(temperature=0.0):
         from langchain_openai import ChatOpenAI
         return ChatOpenAI(
             openai_api_key=openai_key,
-            model=config.OPENAI_LLM_MODEL,
+            model=model_name if model_name else config.OPENAI_LLM_MODEL,
             temperature=temperature
         )
     elif config.LLM_PROVIDER == "anthropic":
@@ -39,7 +39,7 @@ def get_llm(temperature=0.0):
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(
             anthropic_api_key=anthropic_key,
-            model=config.ANTHROPIC_LLM_MODEL,
+            model=model_name if model_name else config.ANTHROPIC_LLM_MODEL,
             temperature=temperature
         )
     elif config.LLM_PROVIDER in ["gemini", "google"]:
@@ -48,7 +48,7 @@ def get_llm(temperature=0.0):
         from langchain_google_genai import ChatGoogleGenerativeAI
         return ChatGoogleGenerativeAI(
             google_api_key=google_key,
-            model=config.GEMINI_LLM_MODEL,
+            model=model_name if model_name else config.GEMINI_LLM_MODEL,
             temperature=temperature
         )
     else:

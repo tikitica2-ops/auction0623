@@ -602,8 +602,9 @@ def render_agent_monitor(placeholder=None):
     
     agents_info = [
         ("router", "🧠 오케스트레이터 라우터"),
-        ("procedure", "📋 절차 안내 에이전트"),
-        ("tutor", "🎓 권리분석 튜터 에이전트"),
+        ("cao", "⚖️ 권리&가격 산정 에이전트"),
+        ("tutor", "🎓 경매 튜터 에이전트"),
+        ("procedure", "📋 절차안내 에이전트"),
         ("quiz", "🎯 퀴즈 채점 에이전트"),
         ("diary", "📓 학습일기 분석 에이전트"),
     ]
@@ -1041,6 +1042,9 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
                 status_placeholder.markdown(html, unsafe_allow_html=True)
             
             if not st.session_state.get("analysis_completed"):
+                st.session_state.active_agent = "cao"
+                render_agent_monitor(monitor_placeholder)
+                
                 # Initial statuses: all "⚪ 대기"
                 statuses = {f: "⚪ 대기" for f in sorted_files}
                 statuses["predict"] = "⚪ 대기"
@@ -1100,7 +1104,7 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
                 # Call LLM
                 with st.spinner("🤖 CAO 에이전트가 권리관계 및 실거래가 기반 적정 입찰가를 분석 중입니다..."):
                     try:
-                        llm = providers.get_llm(temperature=0.2)
+                        llm = providers.get_llm(temperature=0.2, model_name="gpt-4o")
                         system_prompt = (
                             "당신은 부동산 경매 최고 분석 책임자(CAO) 박사입니다.\n"
                             "첨부된 사건에 관련된 법원 서류들(현황조사서, 매각물건명세서 등)의 원본 내용 텍스트와 최근 국토부 실거래가 정보를 정밀 분석하여 "
@@ -1133,6 +1137,7 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
                 
                 st.session_state.analysis_completed = True
                 st.session_state.show_analysis_dialog = True
+                st.session_state.active_agent = "idle"
                 st.rerun()
             else:
                 # Completed state rendering
@@ -1497,7 +1502,7 @@ elif st.session_state.current_tab == "📄 권리자료 PDF 분석":
     if not uploaded_file:
         sample_path = r"c:\AI-Agent\auction0623\매각물건명세서_샘플.pdf"
         if os.path.exists(sample_path):
-            st.markdown("💡 **실습용 파일이 없으시다면?**")
+            st.markdown("💡 **분석 결과 사례를 보고 싶으시면?**")
             if st.button("📄 샘플 매각물건명세서 불러오기 (매각물건명세서_샘플.pdf)", use_container_width=True):
                 with open(sample_path, "rb") as f:
                     st.session_state.sample_pdf_bytes = f.read()
