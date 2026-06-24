@@ -5,10 +5,10 @@ from typing import List, Dict, Any
 
 def load_novel() -> List[Dict[str, Any]]:
     """
-    Loads all episodes of the novel directly from the files in 'c:\\AI-Agent\\auction'
+    Loads all episodes of the novel directly from the files in 'c:\\AI-Agent\\auction0623'
     starting with '제' and ending with '.txt', sorted by episode number descending (latest first).
     """
-    directory = r"c:\AI-Agent\auction"
+    directory = r"c:\AI-Agent\auction0623"
     novels = []
     if not os.path.exists(directory):
         return novels

@@ -4,13 +4,13 @@ from typing import Dict, List, Any
 
 def load_auction_excel() -> Dict[str, Any]:
     """
-    Parses 'c:\\AI-Agent\\auction\\법원경매물건_14건.xlsx' using pandas.
+    Parses 'c:\\AI-Agent\\auction0623\\법원경매물건_14건.xlsx' using pandas.
     Classifies 3 predefined items as 'recommended' and the rest 11 items as 'general'.
     """
-    filepath = r"c:\AI-Agent\auction\법원경매물건.xls"
+    filepath = r"c:\AI-Agent\auction0623\법원경매물건.xls"
     if not os.path.exists(filepath):
         for alt_name in ["법원경매물건.xlsx", "법원경매물건_14건.xlsx", "법원경매물건_14건 - 복사본.xlsx"]:
-            alt_path = os.path.join(r"c:\AI-Agent\auction", alt_name)
+            alt_path = os.path.join(r"c:\AI-Agent\auction0623", alt_name)
             if os.path.exists(alt_path):
                 filepath = alt_path
                 break
@@ -85,7 +85,7 @@ def load_auction_excel() -> Dict[str, Any]:
         }
     except Exception as e:
         import traceback
-        with open(r"c:\AI-Agent\auction\excel_error.txt", "w", encoding="utf-8") as f:
+        with open(r"c:\AI-Agent\auction0623\excel_error.txt", "w", encoding="utf-8") as f:
             f.write(f"Error: {e}\n")
             f.write(traceback.format_exc())
         print(f"Error loading Excel file: {e}")

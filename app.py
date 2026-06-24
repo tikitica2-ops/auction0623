@@ -1404,7 +1404,7 @@ elif st.session_state.current_tab == "👥 About Crew":
         """, unsafe_allow_html=True)
         with st.expander("📄 PM/CEO 상세 가이드라인 (admin.md) 보기"):
             try:
-                with open(r"c:\AI-Agent\auction\admin.md", "r", encoding="utf-8") as f:
+                with open(r"c:\AI-Agent\auction0623\admin.md", "r", encoding="utf-8") as f:
                     st.markdown(f.read())
             except Exception as e:
                 st.error(f"파일을 읽을 수 없습니다: {e}")
@@ -1428,7 +1428,7 @@ elif st.session_state.current_tab == "👥 About Crew":
         """, unsafe_allow_html=True)
         with st.expander("📄 CDO 상세 가이드라인 (cdo.md) 보기"):
             try:
-                with open(r"c:\AI-Agent\auction\cdo.md", "r", encoding="utf-8") as f:
+                with open(r"c:\AI-Agent\auction0623\cdo.md", "r", encoding="utf-8") as f:
                     st.markdown(f.read())
             except Exception as e:
                 st.error(f"파일을 읽을 수 없습니다: {e}")
@@ -1453,7 +1453,7 @@ elif st.session_state.current_tab == "👥 About Crew":
         """, unsafe_allow_html=True)
         with st.expander("📄 CTO 상세 가이드라인 (cto.md) 보기"):
             try:
-                with open(r"c:\AI-Agent\auction\cto.md", "r", encoding="utf-8") as f:
+                with open(r"c:\AI-Agent\auction0623\cto.md", "r", encoding="utf-8") as f:
                     st.markdown(f.read())
             except Exception as e:
                 st.error(f"파일을 읽을 수 없습니다: {e}")
@@ -1477,7 +1477,7 @@ elif st.session_state.current_tab == "👥 About Crew":
         """, unsafe_allow_html=True)
         with st.expander("📄 CAO 상세 가이드라인 (auction.md) 보기"):
             try:
-                with open(r"c:\AI-Agent\auction\auction.md", "r", encoding="utf-8") as f:
+                with open(r"c:\AI-Agent\auction0623\auction.md", "r", encoding="utf-8") as f:
                     st.markdown(f.read())
             except Exception as e:
                 st.error(f"파일을 읽을 수 없습니다: {e}")
@@ -1496,7 +1496,7 @@ elif st.session_state.current_tab == "📄 권리자료 PDF 분석":
             del st.session_state.sample_pdf_name
             
     if not uploaded_file:
-        sample_path = r"c:\AI-Agent\auction\매각물건명세서_샘플.pdf"
+        sample_path = r"c:\AI-Agent\auction0623\매각물건명세서_샘플.pdf"
         if os.path.exists(sample_path):
             st.markdown("💡 **실습용 파일이 없으시다면?**")
             if st.button("📄 샘플 매각물건명세서 불러오기 (매각물건명세서_샘플.pdf)", use_container_width=True):
