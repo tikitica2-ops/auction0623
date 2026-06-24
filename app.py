@@ -722,7 +722,6 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
     # Header date, weather and main title (Mapped from template)
     st.markdown("""
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
-        <span style="color:#4B5563; font-weight:600; font-size:0.95rem;">📅 2026.06.20 (토) ☀️ 25°C</span>
     </div>
     """, unsafe_allow_html=True)
     
