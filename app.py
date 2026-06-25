@@ -687,26 +687,7 @@ with st.sidebar:
         reset_chat()
         st.rerun()
         
-    st.markdown("---")
-    st.markdown("### ✏️ 실전 권리분석 퀴즈")
-    st.write("가상 경매 물건의 권리관계를 직접 분석하고 AI의 상세 채점과 피드백을 받아보세요.")
-    
-    cases = quiz_agent.load_cases()
-    if cases:
-        case_options = {c["title"]: c["id"] for c in cases}
-        selected_title = st.selectbox("물건 선택", list(case_options.keys()))
-        case_id = case_options[selected_title]
-        
-        if st.button("🚀 퀴즈 풀기 시작", use_container_width=True):
-            st.session_state.quiz_active = True
-            st.session_state.current_case_id = case_id
-            st.session_state.quiz_graded = False
-            st.session_state.grade_results = None
-            st.session_state.active_agent = "quiz"
-            st.session_state.pending_tab_change = "📝 실전 권리분석 퀴즈"
-            st.rerun()
-    else:
-        st.warning("불러올 수 있는 사례 데이터가 없습니다.")
+
 
 # Main Page Layout
 
@@ -1181,6 +1162,34 @@ if st.session_state.current_tab == "🏠 홈 대시보드":
 elif st.session_state.current_tab == "📝 실전 권리분석 퀴즈":
     st.markdown("### 📝 실전 사례 권리분석 퀴즈 모드")
     
+    cases = quiz_agent.load_cases()
+    if cases:
+        case_options = {c["title"]: c["id"] for c in cases}
+        titles_list = list(case_options.keys())
+        current_case_id = st.session_state.get("current_case_id", "case_1")
+        default_index = 0
+        for idx, case in enumerate(cases):
+            if case["id"] == current_case_id:
+                default_index = idx
+                break
+        col_select, _ = st.columns([1, 1])
+        with col_select:
+            selected_title = st.selectbox(
+                "📍 분석할 경매 물건을 선택하세요", 
+                titles_list, 
+                index=default_index,
+                key="quiz_case_selectbox"
+            )
+        chosen_case_id = case_options[selected_title]
+        if chosen_case_id != current_case_id:
+            st.session_state.current_case_id = chosen_case_id
+            st.session_state.quiz_graded = False
+            st.session_state.grade_results = None
+            st.session_state.active_agent = "quiz"
+            st.rerun()
+    else:
+        st.warning("불러올 수 있는 사례 데이터가 없습니다.")
+        
     # Load question data
     try:
         q_data = quiz_agent.get_question(st.session_state.current_case_id)
